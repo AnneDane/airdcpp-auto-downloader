@@ -2,6 +2,16 @@
 
 Extension to add search terms that will be searched in intervals and downloaded when found.
 
+## ⚠️ TTH Auto-Search Enhancement (xAI-Grok Modified Version)
+
+**This fork includes TTH (Tiger Tree Hash) auto-search functionality developed by xAI-Grok.**
+
+### New TTH Features:
+* **Automatic TTH Detection**: 39-character base32 TTH values are automatically detected
+* **Exact TTH Searches**: Uses AirDC++ API's TTH search capability for precise file matching
+* **Mixed Search Lists**: Combine TTH and text patterns in the same search configuration
+* **Backward Compatibility**: All existing text-based search features remain unchanged
+
 ## Supported NodeJS versions
 Though older NodeJS versions may work, only the versions in LTS or Maintenance status are supported.
 
@@ -17,6 +27,7 @@ Changing the search interval requires stopping and starting the extension
 
 * Configure search interval in minutes
 * Provide multiple search terms as a list, one search term per line
+* **NEW**: Automatic TTH (Tiger Tree Hash) detection and searching
 * Options for:
   * minimum size
   * file type
@@ -29,6 +40,15 @@ Changing the search interval requires stopping and starting the extension
   * allow queueing all items from search result
   * remove search term when found
   * handle dupes
+
+### TTH Usage Examples:
+```
+NXLFNHV2HQHTR6GPXVBB6R3NOJPOROCRZ3MVF7Y
+Some movie name
+YUQAQOGX6MPO7WT4VKUARKUOVZZD2ZKMWE3G33A
+Another search term
+```
+The extension automatically detects 39-character TTH values and performs exact TTH searches.
 
 ---
 
