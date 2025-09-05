@@ -157,14 +157,35 @@ export const turnNicksIntoArray = (nicks: string): string[] => {
   return nicksArray;
 };
 
+export const isTTH = (pattern: string): boolean => {
+  // TTH is 39 characters, base32 encoded (A-Z, 2-7)
+  if (pattern.length !== 39) {
+    return false;
+  }
+  const base32Regex = /^[A-Z2-7]+$/;
+  return base32Regex.test(pattern);
+};
+
 export const buildSearchQuery = (item: SearchItem, singlePattern: string) => {
-  return {
-    pattern: singlePattern,
-    extensions: item.extensions.split(';'),
-    excluded: item.excluded.split(';'),
-    file_type: item.file_type,
-    min_size: item.min_size * 1024 * 1024, // MiB
-  };
+  const isTTHPattern = isTTH(singlePattern);
+
+  if (isTTHPattern) {
+    // For TTH searches, use TTH as pattern and file_type
+    return {
+      pattern: singlePattern, // Use TTH as the search pattern
+      file_type: 'tth', // Use 'tth' as file_type for TTH searches
+      min_size: 0, // Don't filter by size for TTH
+    };
+  } else {
+    // For text searches, use full filtering
+    return {
+      pattern: singlePattern,
+      extensions: item.extensions.split(';').filter(ext => ext.trim() !== ''),
+      excluded: item.excluded.split(';').filter(exc => exc.trim() !== ''),
+      file_type: item.file_type,
+      min_size: item.min_size * 1024 * 1024, // MiB
+    };
+  }
 };
 
 export const searchHistoryStats = async (dbFilePath: string) => {

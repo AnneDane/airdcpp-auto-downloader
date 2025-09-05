@@ -109,7 +109,8 @@ const onSearchSent = async (searchItem: SearchItem, pattern: SearchPatternItem, 
   const queueDupe: string = global.SETTINGS.getValue('search_items')[pattern.searchItemId].queue_dupe;
   const wantRemoveDupe: boolean = global.SETTINGS.getValue('search_items')[pattern.searchItemId].remove_dupe;
   const excludedUsers = utils.getExcludedUsers(global.SETTINGS.getValue('search_items')[pattern.searchItemId].excluded_users);
-  const searchQueryPattern: string = searchInfo.query.pattern;
+  const searchQueryPattern: string = searchInfo.query.pattern || '';
+  const searchQueryTTH: string = utils.isTTH(searchQueryPattern) ? searchQueryPattern : '';
 
   let queueResults: GroupedSearchResult[];
 
@@ -167,8 +168,11 @@ const onSearchSent = async (searchItem: SearchItem, pattern: SearchPatternItem, 
       // inside use return to skip search result
       queueResults.forEach((result) => {
 
-        // check exact match
-        if ( wantExactMatch && searchQueryPattern !== result.name ) { return; }
+        // check exact match (skip for TTH searches since TTH is already exact)
+        if ( wantExactMatch && !searchQueryTTH && searchQueryPattern !== result.name ) { return; }
+
+        // check TTH match for TTH searches
+        if ( searchQueryTTH && searchQueryTTH !== result.tth ) { return; }
 
         // check exclude users
         const nicks = utils.turnNicksIntoArray(result.users.user.nicks);

@@ -44,12 +44,13 @@ export interface SlotCount {
 }
 
 export interface SearchQuery {
-  pattern: string;
+  pattern: string | null;
   file_type: string | null;
   min_size: number | null;
   max_size: number | null;
-  extensions: string[] | null;
-  excluded: string[] | null;
+  extensions?: string[] | null;
+  excluded?: string[] | null;
+  tth: string | null;
 }
 
 export interface SearchInstance {
