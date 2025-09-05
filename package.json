@@ -7,6 +7,12 @@
   "author": {
     "name": "pepsi"
   },
+  "contributors": [
+    {
+      "name": "xAI-Grok",
+      "description": "Added TTH auto-search functionality"
+    }
+  ],
   "keywords": [
     "airdcpp",
     "airdcpp-extensions",
